@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import Link from "next/link";
 import { Camera } from "lucide-react";
-import { ThemeProvider, ThemeToggle } from "@/components/theme";
+import { ThemeProvider, ThemeToggle, THEME_STORAGE_KEY } from "@/components/theme";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -19,7 +19,8 @@ export const metadata: Metadata = {
 // on <html> for the first paint. Avoids a flash of incorrect theme.
 const themeInitScript = `(() => {
   try {
-    var stored = localStorage.getItem('theme');
+    var KEY = ${JSON.stringify(THEME_STORAGE_KEY)};
+    var stored = localStorage.getItem(KEY);
     var theme = (stored === 'light' || stored === 'dark' || stored === 'system') ? stored : 'system';
     var resolved = theme === 'system'
       ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
