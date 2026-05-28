@@ -62,6 +62,44 @@ Once ready, you can access the application at the forwarded port URL provided in
    ```
    Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+## Theming (Light / Dark / System)
+
+The app ships with a built-in theme system that supports three states:
+
+- `light` – always light mode
+- `dark` – always dark mode
+- `system` – follows the operating system preference (default)
+
+The current selection is persisted in `localStorage` under the `theme` key and is
+applied to `<html>` (as the `.dark` class) by a small inline script in the document
+`<head>`, so there is **no flash of incorrect theme** on first paint.
+
+### Toggling the theme
+
+A keyboard-accessible toggle button is rendered in the top navigation. Clicking it
+(or pressing Enter / Space when focused) cycles through `light → dark → system`.
+
+### Using the theme in components
+
+```tsx
+"use client";
+import { useTheme } from "@/components/theme";
+
+export function MyComponent() {
+  const { theme, resolvedTheme, setTheme } = useTheme();
+  // theme: "light" | "dark" | "system" (user preference)
+  // resolvedTheme: "light" | "dark" (effective theme, after resolving "system")
+  return <button onClick={() => setTheme("dark")}>Use dark</button>;
+}
+```
+
+When styling with Tailwind, use the `dark:` variant as usual – it is wired to the
+`.dark` class on `<html>`:
+
+```tsx
+<div className="bg-white text-slate-900 dark:bg-slate-900 dark:text-white" />
+```
+
 ## Project Structure
 
 ```bash
